@@ -1,4 +1,4 @@
-package tpjava.tpjavacontrole.enume;
+package tpjava.tpjavacontrole.model.enume;
 
 public enum FishLivEnv {
     FRESH_WATER,
