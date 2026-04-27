@@ -3,15 +3,29 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": false,
+      "configureZshAsDefaultShell": false,
+      "upgradePackages": true
+    },
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "mounts": [
+    "source=${localEnv:USERPROFILE}${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached,readonly"
+  ],
   "customizations": {
     "vscode": {
       "extensions": [
         "vscjava.vscode-java-pack",
-        "pivotal.vscode-spring-boot"
+        "pivotal.vscode-spring-boot",
+        "GitHub.vscode-pull-request-github",
+        "eamodio.gitlens"
       ]
     }
   },
   "forwardPorts": [8080, 3306],
-  "postCreateCommand": "chmod +x mvnw",
+  "postCreateCommand": "chmod +x mvnw && git config --global --add safe.directory ${containerWorkspaceFolder}",
   "remoteUser": "vscode"
 }
