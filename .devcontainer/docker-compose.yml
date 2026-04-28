@@ -1,6 +1,8 @@
 services:
   app:
-    image: mcr.microsoft.com/devcontainers/java:1-17
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
       - ..:/workspaces/${localWorkspaceFolderBasename}:cached
     command: sleep infinity
@@ -9,19 +11,18 @@ services:
         condition: service_healthy
 
   db:
-    image: mysql:8
+    image: mariadb:11
     environment:
-      MYSQL_ROOT_PASSWORD: ""
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: petstore
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: petstore
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 30s
 
 volumes:
-  mysql_data:
+  mariadb_data:
